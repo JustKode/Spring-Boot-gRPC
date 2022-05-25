@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.justkode.examples.lib";
+option java_outer_classname = "HelloGRPCProto";
+
+service MyService {
+    rpc MyFunction(MyNumber) returns (MyNumber) {}
+}
+
+service ServerStreaming {
+    // A Client streaming RPC.
+    rpc GetServerResponse(Number) returns (stream Message) {}
+}
+
+service Bidirectional {
+    // A Bidirectional streaming RPC.
+    //
+    // Accepts a stream of Message sent while a route is being traversed,
+    rpc GetServerResponse(stream Message) returns (stream Message) {}
+}
+
+service ClientStreaming {
+    // A Client streaming RPC.
+    rpc GetServerResponse(stream Message) returns (Number) {}
+}
+
+message Message {
+    string message = 1;
+}
+
+message MyNumber {
+    int32 value = 1;
+}
+
+message Number {
+    int32 value = 1;
+}
