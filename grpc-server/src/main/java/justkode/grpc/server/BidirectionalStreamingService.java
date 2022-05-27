@@ -21,6 +21,7 @@ public class BidirectionalStreamingService extends BidirectionalGrpc.Bidirection
 
             @Override
             public void onError(Throwable t) {
+                log.error(t.getMessage());
             }
 
             @Override

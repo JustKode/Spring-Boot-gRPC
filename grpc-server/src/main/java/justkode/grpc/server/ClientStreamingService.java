@@ -24,7 +24,7 @@ public class ClientStreamingService extends ClientStreamingGrpc.ClientStreamingI
 
             @Override
             public void onError(Throwable t) {
-
+                log.error(t.getMessage());
             }
 
             @Override
