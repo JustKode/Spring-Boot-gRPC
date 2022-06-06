@@ -13,7 +13,7 @@ public class GrpcClientController {
     private final GrpcClientService grpcClientService;
 
     @GetMapping("/unary")
-    public Integer unaryController(Integer number) {
-        return grpcClientService.myServiceFunction(number);
+    public Integer unaryController() {
+        return grpcClientService.myServiceFunction();
     }
 }

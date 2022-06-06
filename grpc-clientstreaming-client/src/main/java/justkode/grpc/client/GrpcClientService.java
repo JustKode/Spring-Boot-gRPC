@@ -22,7 +22,7 @@ public class GrpcClientService {
     @GrpcClient("FSSN")
     private ClientStreamingGrpc.ClientStreamingStub clientStreamingStub;
 
-    public Integer clientStreamingFunction(List<String> strings) {
+    public Integer clientStreamingFunction() {
         // 서버에 보내는 콜백
         final Integer[] result = new Integer[1];
         final CountDownLatch finishLatch = new CountDownLatch(1);
@@ -40,14 +40,16 @@ public class GrpcClientService {
 
             @Override
             public void onCompleted() {
+                log.info("[server to client] " + result[0]);
                 finishLatch.countDown();
             }
         };
 
         StreamObserver<Message> requestObserver = clientStreamingStub.getServerResponse(responseObserver);
-
+        String[] strings = {"message #1", "message #2", "message #3", "message #4", "message #5"};
         try {
             for (String string: strings) {
+                log.info("[client to server] " + string);
                 requestObserver.onNext(Message.newBuilder().setMessage(string).build());
             }
             requestObserver.onCompleted();

@@ -21,13 +21,14 @@ public class GrpcClientService {
     @GrpcClient("FSSN")
     private BidirectionalGrpc.BidirectionalStub bidirectionalStub;
 
-    public List<String> bidirectionalFunction(List<String> messages) {
+    public List<String> bidirectionalFunction() {
         List<String> results = new ArrayList<>();
         final CountDownLatch finishLatch = new CountDownLatch(1);
         // 서버에 보내는 콜백
         StreamObserver<Message> streamObserver = new StreamObserver<>() {
             @Override
             public void onNext(Message value) {
+                log.info("[server to client] " + value.getMessage());
                 results.add(value.getMessage());
             }
 
@@ -44,8 +45,10 @@ public class GrpcClientService {
         };
 
         StreamObserver<Message> requestObserver = bidirectionalStub.getServerResponse(streamObserver);
+        String[] messages = {"message #1", "message #2", "message #3", "message #4", "message #5"};
         try {
             for (String message: messages) {
+                log.info("[client to server] " + message);
                 requestObserver.onNext(Message.newBuilder().setMessage(message).build());
             }
             requestObserver.onCompleted();

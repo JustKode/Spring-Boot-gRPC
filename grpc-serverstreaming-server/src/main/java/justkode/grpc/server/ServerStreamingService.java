@@ -12,8 +12,8 @@ import org.justkode.examples.lib.ServerStreamingGrpc;
 public class ServerStreamingService extends ServerStreamingGrpc.ServerStreamingImplBase {
     @Override
     public void getServerResponse(Number request, StreamObserver<Message> responseObserver) {
-        for (int i = 0; i < 5; i++) {
-            responseObserver.onNext(Message.newBuilder().setMessage("message #" + (i + 1)).build());
+        for (int i = 1; i <= 5; i++) {
+            responseObserver.onNext(Message.newBuilder().setMessage("message #" + i).build());
         }
         log.info(String.format("Server processing gRPC server-streaming %d.", request.getValue()));
         responseObserver.onCompleted();

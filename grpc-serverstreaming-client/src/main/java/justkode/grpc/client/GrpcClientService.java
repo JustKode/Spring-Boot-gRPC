@@ -22,13 +22,16 @@ public class GrpcClientService {
     @GrpcClient("FSSN")
     private ServerStreamingGrpc.ServerStreamingBlockingStub serverStreamingStub;
 
-    public List<String> serverStreamingFunction(Integer number) {
+    public List<String> serverStreamingFunction() {
         try {
-            Iterator<Message> serverResponse = serverStreamingStub.getServerResponse(Number.newBuilder().setValue(number).build());
+            Iterator<Message> serverResponse = serverStreamingStub.getServerResponse(Number.newBuilder().setValue(5).build());
             List<String> results = new ArrayList<>();
-            for (Message m = serverResponse.next(); serverResponse.hasNext(); m = serverResponse.next()) {
-                results.add(m.getMessage());
-            }
+
+            serverResponse.forEachRemaining((response) -> {
+                log.info("[server to client] " + response.getMessage());
+                results.add(response.getMessage());
+            });
+
             return results;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러 발생");

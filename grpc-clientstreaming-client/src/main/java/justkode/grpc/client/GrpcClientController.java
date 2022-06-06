@@ -13,7 +13,7 @@ public class GrpcClientController {
     private final GrpcClientService grpcClientService;
 
     @GetMapping("/client_stream")
-    public Integer clientStreamController(@RequestParam("strings") List<String> strings) {
-        return grpcClientService.clientStreamingFunction(strings);
+    public Integer clientStreamController() {
+        return grpcClientService.clientStreamingFunction();
     }
 }

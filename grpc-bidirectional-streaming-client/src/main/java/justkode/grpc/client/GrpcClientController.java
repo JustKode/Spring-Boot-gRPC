@@ -13,7 +13,7 @@ public class GrpcClientController {
     private final GrpcClientService grpcClientService;
 
     @GetMapping("/bidirectional")
-    public List<String> bidirectionalController(@RequestParam("strings") List<String> strings) {
-        return grpcClientService.bidirectionalFunction(strings);
+    public List<String> bidirectionalController() {
+        return grpcClientService.bidirectionalFunction();
     }
 }

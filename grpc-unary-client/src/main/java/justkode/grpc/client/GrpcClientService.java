@@ -22,9 +22,11 @@ public class GrpcClientService {
     @GrpcClient("FSSN")
     private MyServiceGrpc.MyServiceBlockingStub myServiceStub;
 
-    public Integer myServiceFunction(Integer number) {
+    public Integer myServiceFunction() {
         try {
-            return myServiceStub.myFunction(MyNumber.newBuilder().setValue(number).build()).getValue();
+            int result = myServiceStub.myFunction(MyNumber.newBuilder().setValue(4).build()).getValue();
+            log.info("gRPC result: " + result);
+            return result;
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 내부 에러가 발생했습니다.");
